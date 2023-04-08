@@ -1,11 +1,11 @@
 import jwt from 'jsonwebtoken'
 
-const secret = process.env.JWT_TOKEN
+const secret = process.env.SECRET_TOKEN
 
-const createToken = (obj, expiresIn = '1d') => {
+const createToken = (obj) => {
 
   const options = {
-    expiresIn
+    expiresIn: process.env.EXPIRES_IN_TOKEN
   }
 
   return jwt.sign(obj, secret, options)

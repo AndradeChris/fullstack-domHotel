@@ -31,6 +31,30 @@ const Home = () => {
     })
   }
 
+  const test = async () => {
+    const payload = {
+      refreshToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiRmxhdmlhbm8iLCJlbWFpbCI6ImZsYXZpYW5vQGdtYWlsLmNvbSIsImlkIjoxLCJpYXQiOjE2ODA5ODg2NDcsImV4cCI6MTY4MDk4OTU0N30.PKLEqa20frNtHis82--0mK-pcyYFClftedFVnyJDyx0"
+
+    }
+
+    try {
+      const response = await fetch(`http://localhost:3002/refresh-token`, {
+        method: 'POST', headers: {
+          'X-Powered-By': 'Express',
+          'Content-Type': 'application/json',
+          'Connection': 'keep-alive',
+          'Keep-Alive': 'timeout=5',
+        },
+        body: JSON.stringify(payload)
+      })
+      const result = await response.json()
+      console.log('refresh token', result.data)
+    } catch (error) {
+      console.log('erro', error);
+
+    }
+  }
+
   return (
     <>
       <Helmet>
@@ -39,6 +63,7 @@ const Home = () => {
       </Helmet>
       <S.Wrapper>
         <PrincipalTitle>{content.section1.title}</PrincipalTitle>
+        <button onClick={test}>testeeeeeee</button>
         <DescriptionParagraph msg={content.section1.description} />
         <SubTitle>{content.section2.title}</SubTitle>
         <S.AccommodationContainer>

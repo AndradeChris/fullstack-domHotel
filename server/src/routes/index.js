@@ -5,6 +5,7 @@ import consumo from './consumo.js'
 import contato from './contato.js'
 import funcionarios from './funcionarios.js'
 import login from './login.js'
+import refreshToken from './refreshToken.js'
 import reservas from './reservas.js'
 import signup from './signup.js'
 import user from './user.js'
@@ -26,7 +27,8 @@ const routes = app => {
     funcionarios,
     consumo,
     user,
-    contato
+    contato,
+    refreshToken,
   )
 }
 

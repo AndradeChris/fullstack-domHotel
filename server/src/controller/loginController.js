@@ -1,5 +1,6 @@
 import bcrypt from 'bcrypt'
 import sqlDB from '../app/mysql.js'
+import createRefreshToken from '../utils/createRefreshoken.js'
 import createToken from '../utils/createToken.js'
 
 class LoginController {
@@ -71,7 +72,7 @@ class LoginController {
         }
 
 
-        const token = createToken({
+         const token = createToken({
           name: data[0].name,
           email,
           id: data[0].id,
@@ -81,6 +82,30 @@ class LoginController {
           })
         })
 
+        const refreshToken = createRefreshToken({
+          name: data[0].name,
+          email,
+          id: data[0].id,
+          ...(isAdmin && {
+            admin: true,
+            id_office: await getIdOffice()
+          })
+        })
+
+        const refreshTokenDays = new Date(new Date().getTime()+(3*24*60*60*1000));
+
+        sqlDB.query('INSERT INTO `users_token` (refresh_token, user_id, expires_date) VALUES (?, ?, ?)', [refreshToken, data[0].id, refreshTokenDays], (err, data) => {
+
+          if(err) {
+            res.status(401).send({
+              status: 401,
+              message: 'Usuário não autorizado',
+              error: err.message
+            })
+            return
+          }       
+        })    
+        
         sqlDB.query('UPDATE ?? SET `lastLogin` = ? WHERE `email` = ?', [table, new Date(), email], async err => {
           if (err) {
             res.status(500).send({
@@ -101,10 +126,10 @@ class LoginController {
                 id_office: await getIdOffice()
               })
             },
-            token
+            token,
+            refreshToken
           })
         })
-
       })
     } catch (err) {
       res.status(500).send({
