@@ -120,6 +120,12 @@ export const BPrintPDF = styled.div`
   margin-top: 10px;
  }
 
+ button:hover {
+  background-color: transparent;
+  color:  ${pallete.greenDark};
+  text-decoration: none;
+ }
+
   
 `
 
